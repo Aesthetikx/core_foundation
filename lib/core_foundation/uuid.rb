@@ -22,17 +22,16 @@ module CoreFoundation
 
   typedef :ulong,   :cf_type_id
   typedef :pointer, :cf_allocator_ref
-  typedef :pointer, :cf_uuid_ref
   typedef :pointer, :cf_string_ref
 
   # rubocop:disable Style/SymbolArray
   attach_function :CFUUIDGetTypeID,                [],                                        :cf_type_id
-  attach_function :CFUUIDCreate,                   [:cf_allocator_ref],                       :cf_uuid_ref
-  attach_function :CFUUIDCreateWithBytes,          [:cf_allocator_ref, *[:uchar] * 16],       :cf_uuid_ref
-  attach_function :CFUUIDCreateFromString,         [:cf_allocator_ref, :cf_string_ref],       :cf_uuid_ref
-  attach_function :CFUUIDCreateString,             [:cf_allocator_ref, :cf_uuid_ref],         :cf_string_ref
-  attach_function :CFUUIDGetConstantUUIDWithBytes, [:cf_allocator_ref, *[:uchar] * 16],       :cf_uuid_ref
-  attach_function :CFUUIDGetUUIDBytes,             [:cf_uuid_ref],                            CFUUIDBytes.by_value
-  attach_function :CFUUIDCreateFromUUIDBytes,      [:cf_allocator_ref, CFUUIDBytes.by_value], :cf_uuid_ref
+  attach_function :CFUUIDCreate,                   [:cf_allocator_ref],                       CFUUIDBytes.by_ref
+  attach_function :CFUUIDCreateWithBytes,          [:cf_allocator_ref, *[:uchar] * 16],       CFUUIDBytes.by_ref
+  attach_function :CFUUIDCreateFromString,         [:cf_allocator_ref, :cf_string_ref],       CFUUIDBytes.by_ref
+  attach_function :CFUUIDCreateString,             [:cf_allocator_ref, CFUUIDBytes.by_ref],   :cf_string_ref
+  attach_function :CFUUIDGetConstantUUIDWithBytes, [:cf_allocator_ref, *[:uchar] * 16],       CFUUIDBytes.by_ref
+  attach_function :CFUUIDGetUUIDBytes,             [CFUUIDBytes.by_ref],                      CFUUIDBytes.by_value
+  attach_function :CFUUIDCreateFromUUIDBytes,      [:cf_allocator_ref, CFUUIDBytes.by_value], CFUUIDBytes.by_ref
   # rubocop:enable Style/SymbolArray
 end
